@@ -30,17 +30,17 @@ class Util:
         
         Hi there,
         
-        Verify your email with the code below to start using Emo. 
+        Verify your email with the code below to start using NYR. 
         
         \t \t \t{otp}\t \t \t 
         
-        If you did not create a Emo account, you can ignore this message.
+        If you did not create a NYR account, you can ignore this message.
         
-        Warm regards,Emo
+        Warm regards,NYR
         
         Copyright © 2023
         '''
-        email_subject = "Welcome to Emo - Please verify your Email"
+        email_subject = "Welcome to NYR - Please verify your Email"
         data = {
             "email_body": email_body,
             "to_email": email_address,
@@ -55,8 +55,8 @@ class Util:
 
     @staticmethod
     def send_forgot_password_email(email_address, otp):
-        email_body = f"Emo \n \nReset your password \n \nHi there, \nYou recently tried to request a password change from for your account. As a security measure, you need to click the link below to verify your identity \n \n {otp} \n \n If you do not recognize this activity, please contact us at support@Emo.com or simply reply to this email to secure your account. \n \nWarm regards, \nEmo \n \n Copyright © 2023"
-        email_subject = "Welcome to Emo - Please verify your Email"
+        email_body = f"NYR \n \nReset your password \n \nHi there, \nYou recently tried to request a password change from for your account. As a security measure, you need to click the link below to verify your identity \n \n {otp} \n \n If you do not recognize this activity, please contact us at support@NYR.com or simply reply to this email to secure your account. \n \nWarm regards, \nNYR \n \n Copyright © 2023"
+        email_subject = "Welcome to NYR - Please verify your Email"
         data = {
             "email_body": email_body,
             "to_email": email_address,
