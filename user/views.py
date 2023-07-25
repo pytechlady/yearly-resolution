@@ -71,7 +71,7 @@ class UserViewset(viewsets.ModelViewSet):
                 return Response(
                     {
                         "Success": True,
-                        "message": "Your Emo account has been created successfully.",
+                        "message": "Your account has been created successfully.",
                     },
                     status=status.HTTP_201_CREATED,
                 )

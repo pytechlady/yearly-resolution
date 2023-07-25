@@ -7,6 +7,7 @@ app_name = 'goals'
 router = DefaultRouter()
 router.register(r'goals', GoalViewset, basename='goals')
 router.register(r'user_goals', UserGoalViewset, basename='user-goals')
+router.register(r'friends', FriendViewset, basename='friends')
 
 
 

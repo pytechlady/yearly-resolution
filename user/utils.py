@@ -1,10 +1,13 @@
 import random
 import math
 from pyfcm import FCMNotification
-from django.core.mail import EmailMessage
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+from decouple import config
 
 
 class Util:
+    
     @staticmethod
     def generate_otp():
         digits = "0123456789"
@@ -25,50 +28,69 @@ class Util:
 
     @staticmethod
     def send_registration_email(email_address, otp):
-        email_body = f'''
-        Verify your email address
+        message = Mail(
+        from_email=config('SENDGRID_EMAIL'),
+        to_emails=email_address,
+        subject="Welcome to NYR - Please verify your Email",
+        html_content='''
+        <h3>Verify your email address</h3> \n \n
         
-        Hi there,
+        <p>Hi there,</p> \n \n
         
-        Verify your email with the code below to start using NYR. 
+        <p>Verify your email with the code below to start using NYR.</p> \n \n
         
-        \t \t \t{otp}\t \t \t 
+        <div>{otp}</div> \n \n
         
-        If you did not create a NYR account, you can ignore this message.
+        <p>If you did not create a NYR account, you can ignore this message.</p> \n \n
         
-        Warm regards,NYR
+        <p>Warm regards,NYR</p> \n \n
         
-        Copyright © 2023
-        '''
-        email_subject = "Welcome to NYR - Please verify your Email"
-        data = {
-            "email_body": email_body,
-            "to_email": email_address,
-            "email_subject": email_subject,
-        }
-        email = EmailMessage(
-            subject=data["email_subject"],
-            body=data["email_body"],
-            to=[data["to_email"]],
-        )
-        email.send()
+        <p>Copyright © 2023</p>
+        
+        ''')
+        try:
+            sg = SendGridAPIClient(api_key =config('SENDGRID_API_KEY'))
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+        except Exception as e:
+            print(str(e))
 
     @staticmethod
     def send_forgot_password_email(email_address, otp):
-        email_body = f"NYR \n \nReset your password \n \nHi there, \nYou recently tried to request a password change from for your account. As a security measure, you need to click the link below to verify your identity \n \n {otp} \n \n If you do not recognize this activity, please contact us at support@NYR.com or simply reply to this email to secure your account. \n \nWarm regards, \nNYR \n \n Copyright © 2023"
-        email_subject = "Welcome to NYR - Please verify your Email"
-        data = {
-            "email_body": email_body,
-            "to_email": email_address,
-            "email_subject": email_subject,
-        }
-        email = EmailMessage(
-            subject=data["email_subject"],
-            body=data["email_body"],
-            to=[data["to_email"]],
-        )
-        email.send()
+        message = Mail(
+        from_email=config('SENDGRID_EMAIL'),
+        to_emails=email_address,
+        subject="Password Reset",
+        html_content='''
+        <h3>NYR \n \nReset your password</h3> \n \n
         
+        <p>Hi there,</p> \n \n
+        
+        <p>You recently tried to request a password change from for your account.</p> \n \n
+        
+        <p>As a security measure, you need to click the link below to verify your identity</p> \n \n 
+        
+        <div>{otp}</div> \n \n 
+        
+        <p>If you do not recognize this activity, please contact us at support@NYR.com</p> \n \n
+        
+        <p>Warm regards,</p> \n
+        
+        <p>NYR</p> \n \n 
+        
+        <p>Copyright © 2023</p>
+        ''')
+        try:
+            sg = SendGridAPIClient(config('SENDGRID_API_KEY'))
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+        except Exception as e:
+            print(str(e))
+
     @staticmethod
     def generate_referral_link():
         letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
