@@ -95,3 +95,15 @@ class UserRewardViewset(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except UserReward.DoesNotExist:
             return Response({"message": "No users rewards found"}, status=status.HTTP_404_NOT_FOUND)
+        
+    @action(methods=['get'], detail=False)
+    def get_user_reward(self, request):
+        try:
+            user = request.user
+            user_reward = UserReward.objects.filter(user=user)
+            if not user_reward:
+                return Response({"message": "No rewards for this user"}, status=status.HTTP_404_NOT_FOUND)
+            serializer = self.serializer_class(user_reward, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserReward.DoesNotExist:
+            return Response({"message": "User reward not found"}, status=status.HTTP_404_NOT_FOUND)
