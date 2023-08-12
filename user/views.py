@@ -95,7 +95,7 @@ class UserViewset(viewsets.ModelViewSet):
                     otp = Util.generate_otp()
                     user.otp = otp
                     user.save()
-                    Util.send_registration_email(user.email, otp)
+                    # Util.send_registration_email(user.email, otp)
                     return Response({'success': True, 'message': f'OTP sent successfully {otp}'}, status=status.HTTP_200_OK)
                 return Response({'success': False, 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
             
@@ -312,7 +312,7 @@ class ForgotPasswordViewset(viewsets.ModelViewSet):
                 reset_url = f"/api/forgot/reset-password/?encoded_pk={encoded_pk}&token={token}/"
                 reset_password_link = f"localhost:8000{reset_url}"
 
-                Util.send_forgot_password_email(email, reset_password_link)
+                # Util.send_forgot_password_email(email, reset_password_link)
 
                 return Response(
                     {
